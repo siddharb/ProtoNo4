@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class drawLineAgain : MonoBehaviour {
+public class drawLineAgain2 : MonoBehaviour {
 
 	public Transform origin;
 	public Transform destination;
@@ -14,54 +14,65 @@ public class drawLineAgain : MonoBehaviour {
 	float xe = 1;
 	float theta3;
 	bool drawingComplete;
-	int vertextCount = 3;
+	Vector3 startPoint;
+	int n = 3;
+	int i = 0;
 
 	
 	void Start () 
 	{
 		lineSpeed = 100;
 		lineRenderer = GetComponent<LineRenderer>();
-		lineRenderer.SetWidth(0.1f, 0.1f);
-		lineRenderer.SetPosition(0, origin.position);
-		lineRenderer.SetVertexCount(vertextCount+1);
+		lineRenderer.SetPosition(0, destination.position);
+		lineRenderer.SetWidth(0.45f, 0.45f);
 		dist = Vector3.Distance(origin.position,destination.position);
 		points = new Transform[20];
 		points[0] = origin;
+		startPoint = origin.position;
 		points[1] = destination;
 	}
 	
 	void Update () 
 	{
-		drawLaser(points[0].position,3);
-	
-	}
-
-	void drawLaser(Vector3 startPoint,int n)  
-	{
- 	   Vector3 rayDir = transform.TransformDirection (Vector3.forward);
+	//	drawLaser(points[0].position,3);
+		Vector3 rayDir = transform.TransformDirection (Vector3.forward);
  		RaycastHit hit;
-    	for(int i = 0; i < n; i++)
+    	if(i<n)
     	{     
        	 if (Physics.Raycast (startPoint, rayDir, out hit, 1000f)) 
     	    {
 				if (hit.collider.gameObject.tag == "mirror")
 					{
 						Debug.DrawLine (startPoint, hit.point);
-						LineRenderer l2 = GetComponent<LineRenderer>();
-						//l2.SetPosition(i,startPoint);
            				rayDir = Vector3.Reflect( (hit.point - startPoint).normalized, hit.normal  ) ;
-						//lineRenderer.SetPosition(2, rayDir*1000f);
             	   		startPoint = hit.point;
-					lineRenderer.SetPosition(i+1, startPoint);
 					}
      	 	 }
 				else
 				{
 					Debug.DrawLine (startPoint, rayDir*1000f);
-				lineRenderer.SetPosition(i+1, rayDir*1000f);
-					//lineRenderer.SetPosition(i, rayDir*1000f);
 				}
+			i++;
     	}
+		else
+		{
+			i = 0;
+		}
+	
+	}
+	void drawLine(Vector3 origin, Vector3 destination)
+	{
+		if(counter < dist)
+		{
+			counter += 1/lineSpeed;
+			float x = Mathf.Lerp(0,dist,counter);
+			Vector3 pointAlongLine = origin + x*Vector3.Normalize(destination - origin);
+			lineRenderer.SetPosition(1, pointAlongLine);
+		}
+		else
+		{
+			drawingComplete = true;
+		}
 	}
 
 }

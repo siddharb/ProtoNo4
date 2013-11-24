@@ -44,8 +44,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\RotateButton.cs" />
+     <Compile Include="Assets\RotateOnMouseCS.cs" />
      <Compile Include="Assets\drawLine.cs" />
      <Compile Include="Assets\drawLineAgain.cs" />
+     <Compile Include="Assets\drawLineAgain2.cs" />
+     <Compile Include="Assets\moveOnMouse.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
