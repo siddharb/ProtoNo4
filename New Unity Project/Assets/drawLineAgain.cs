@@ -4,35 +4,33 @@ using System.Collections;
 public class drawLineAgain : MonoBehaviour {
 
 	public Transform origin;
-	public Transform destination;
-	private Transform[] points;
 	private LineRenderer lineRenderer;
-	private float dist;
-	public float lineSpeed;
-	private float counter;
-	float reach = 100;
-	float xe = 1;
-	float theta3;
-	bool drawingComplete;
-	int vertextCount = 3;
+	private LineRenderer lineRendererG;
+	public int vertextCount = 3;
+	Color c1 = Color.red;
+	GameObject G;
+	LineRenderer lineRenderer2;
 
 	
 	void Start () 
 	{
-		lineSpeed = 100;
+		G = new GameObject();
 		lineRenderer = GetComponent<LineRenderer>();
+		lineRendererG = GetComponent<LineRenderer>();
+		lineRenderer2 = G.AddComponent<LineRenderer>();
 		lineRenderer.SetWidth(0.1f, 0.1f);
 		lineRenderer.SetPosition(0, origin.position);
 		lineRenderer.SetVertexCount(vertextCount+1);
-		dist = Vector3.Distance(origin.position,destination.position);
-		points = new Transform[20];
-		points[0] = origin;
-		points[1] = destination;
+		lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+		lineRenderer2.SetWidth(0.1f, 0.1f);
+		lineRenderer2.SetPosition(0, origin.position);
+		lineRenderer2.SetVertexCount(2);
+		lineRenderer2.material = new Material(Shader.Find("Particles/Additive"));
 	}
 	
 	void Update () 
 	{
-		drawLaser(points[0].position,3);
+		drawLaser(origin.position,vertextCount);
 	
 	}
 
@@ -46,17 +44,32 @@ public class drawLineAgain : MonoBehaviour {
     	    {
 				if (hit.collider.gameObject.tag == "mirror")
 					{
+
 						Debug.DrawLine (startPoint, hit.point);
-						LineRenderer l2 = GetComponent<LineRenderer>();
-						//l2.SetPosition(i,startPoint);
+
            				rayDir = Vector3.Reflect( (hit.point - startPoint).normalized, hit.normal  ) ;
-						//lineRenderer.SetPosition(2, rayDir*1000f);
             	   		startPoint = hit.point;
-					lineRenderer.SetPosition(i+1, startPoint);
+						lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+						lineRenderer.SetColors(Color.yellow, Color.yellow);
+						lineRenderer.SetPosition(i+1, startPoint);
 					}
+				if (hit.collider.gameObject.name == "Glass_red")
+				{
+					Debug.DrawLine (startPoint, hit.point);
+					LineRenderer l2 = GetComponent<LineRenderer>();
+					rayDir = hit.point*100f ;
+					//lineRenderer.SetPosition(2, rayDir*1000f);
+					lineRenderer.SetPosition(i+1, hit.point);
+					lineRenderer2.SetColors(Color.white, Color.white);
+					lineRenderer2.SetPosition(0, hit.point);
+					lineRenderer2.SetPosition(1, rayDir);
+					startPoint = hit.point;
+				}
      	 	 }
 				else
 				{
+				//lineRenderer2.SetPosition(0, -1*hit.point);
+				//lineRenderer2.SetPosition(1, -1*rayDir);
 					Debug.DrawLine (startPoint, rayDir*1000f);
 				lineRenderer.SetPosition(i+1, rayDir*1000f);
 					//lineRenderer.SetPosition(i, rayDir*1000f);

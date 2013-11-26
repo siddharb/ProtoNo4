@@ -22,7 +22,7 @@ public class RotateOnMouseCS : MonoBehaviour {
 		float rotationZ = Input.GetAxis("Mouse Y") * sensitivityZ;
 		if(rb)
 		{
-			print ("WoWoWEEWaa");
+//			print ("WoWoWEEWaa");
 			if(rb.getStatus() == true)
 			{
 				mytransform.RotateAround( referenceCamera.forward , Mathf.Deg2Rad * rotationZ);
