@@ -40,6 +40,8 @@ public class drawLineAgain : MonoBehaviour {
  	   Vector3 rayDir = transform.TransformDirection (Vector3.forward);
  		RaycastHit hit;
 		int mirrorCount = 0;
+		int glassCount = 0;
+		int run = 0;
 		bool mirror1 = false;
 		lineRenderer2.SetVertexCount(0);
     	for(int i = 0; i < n; i++)
@@ -55,23 +57,28 @@ public class drawLineAgain : MonoBehaviour {
             	   		startPoint = hit.point;
 						if(mirror1 == false)
 						{
-						lineRenderer2.SetVertexCount(0);
-						lineRenderer.SetPosition(i+1, startPoint);
+						run++;
+						lineRenderer.SetVertexCount(glassCount+2);
+						lineRenderer.SetPosition(glassCount+1, hit.point);
+						glassCount++;
 						}
 						else
 						{
-						lineRenderer2.SetVertexCount(++mirrorCount);
-						lineRenderer2.SetPosition(mirrorCount, startPoint);
+						lineRenderer2.SetVertexCount(mirrorCount+1);
+						lineRenderer2.SetPosition(mirrorCount, hit.point);
+						mirrorCount++;
 						//mirrorCount++;
 						}
 					}
 				if (hit.collider.gameObject.name == "Glass_red")
 				{
 					lineRenderer2.SetVertexCount(vertextCount+1);
-					lineRenderer.SetVertexCount(3);
+					lineRenderer.SetVertexCount(run+1);
 					Debug.DrawLine (startPoint, hit.point);
-					rayDir = (hit.point - startPoint)*100f ;
-					lineRenderer.SetPosition(i+1, hit.point);
+					rayDir = Vector3.Normalize((hit.point - startPoint)*100f );
+					lineRenderer.SetVertexCount(glassCount+2);
+					lineRenderer.SetPosition(glassCount+1, hit.point);
+					glassCount++;
 					lineRenderer2.SetVertexCount(mirrorCount+1);
 					lineRenderer2.SetPosition(mirrorCount, hit.point);
 					mirrorCount++;
@@ -85,7 +92,9 @@ public class drawLineAgain : MonoBehaviour {
 					if(mirror1 == false)
 					{
 						lineRenderer2.SetVertexCount(0);
-						lineRenderer.SetPosition(i+1, hit.point);
+						lineRenderer.SetVertexCount(glassCount+2);
+						lineRenderer.SetPosition(glassCount+1, hit.point);
+						glassCount++;
 					}
 
 				}
@@ -94,7 +103,9 @@ public class drawLineAgain : MonoBehaviour {
 					if(mirror1 == false)
 					{
 						lineRenderer2.SetVertexCount(0);
-						lineRenderer.SetPosition(i+1, hit.point);
+						lineRenderer.SetVertexCount(glassCount+2);
+						lineRenderer.SetPosition(glassCount+1, hit.point);
+						glassCount++;
 					}
 					Application.Quit();
 				}
@@ -104,12 +115,14 @@ public class drawLineAgain : MonoBehaviour {
 				if(mirror1 == false)
 				{
 				Debug.DrawLine (startPoint, rayDir*1000f);
-				lineRenderer.SetPosition(i+1, rayDir*1000f);
+					lineRenderer.SetVertexCount(glassCount+2);
+					lineRenderer.SetPosition(glassCount+1, rayDir*1000f);
+					glassCount++;
 				}
 				else
 				{
 					lineRenderer2.SetVertexCount(mirrorCount+1);
-					lineRenderer2.SetPosition(mirrorCount, rayDir);
+					lineRenderer2.SetPosition(mirrorCount, rayDir*1000f);
 					mirrorCount++;
 				}
 				}
