@@ -22,10 +22,12 @@ public class drawLineAgain : MonoBehaviour {
 		lineRenderer.SetPosition(0, origin.position);
 		lineRenderer.SetVertexCount(vertextCount+1);
 		lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+		lineRenderer.SetColors(Color.yellow, Color.yellow);
 		lineRenderer2.SetWidth(0.1f, 0.1f);
 		lineRenderer2.SetPosition(0, origin.position);
-		lineRenderer2.SetVertexCount(2);
+		lineRenderer2.SetVertexCount(vertextCount+1);
 		lineRenderer2.material = new Material(Shader.Find("Particles/Additive"));
+		lineRenderer2.SetColors(Color.white, Color.white);
 	}
 	
 	void Update () 
@@ -38,6 +40,8 @@ public class drawLineAgain : MonoBehaviour {
 	{
  	   Vector3 rayDir = transform.TransformDirection (Vector3.forward);
  		RaycastHit hit;
+		int mirrorCount = 1;
+		bool mirror1 = false;
     	for(int i = 0; i < n; i++)
     	{     
        	 if (Physics.Raycast (startPoint, rayDir, out hit, 1000f)) 
@@ -49,30 +53,70 @@ public class drawLineAgain : MonoBehaviour {
 
            				rayDir = Vector3.Reflect( (hit.point - startPoint).normalized, hit.normal  ) ;
             	   		startPoint = hit.point;
-						lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-						lineRenderer.SetColors(Color.yellow, Color.yellow);
+						if(mirror1 == false)
+						{
+						lineRenderer2.SetVertexCount(0);
 						lineRenderer.SetPosition(i+1, startPoint);
+						}
+						else
+						{
+						lineRenderer2.SetVertexCount(++mirrorCount);
+						lineRenderer2.SetPosition(mirrorCount, startPoint);
+						//mirrorCount++;
+						}
 					}
 				if (hit.collider.gameObject.name == "Glass_red")
 				{
+					lineRenderer2.SetVertexCount(vertextCount+1);
+					lineRenderer.SetVertexCount(3);
 					Debug.DrawLine (startPoint, hit.point);
-					LineRenderer l2 = GetComponent<LineRenderer>();
-					rayDir = hit.point*100f ;
-					//lineRenderer.SetPosition(2, rayDir*1000f);
+					rayDir = (hit.point - startPoint)*100f ;
 					lineRenderer.SetPosition(i+1, hit.point);
-					lineRenderer2.SetColors(Color.white, Color.white);
+					if(mirror1 == false)
+					{
 					lineRenderer2.SetPosition(0, hit.point);
-					lineRenderer2.SetPosition(1, rayDir);
+					}
+					lineRenderer2.SetPosition(mirrorCount, rayDir);
+					mirrorCount++;
+					lineRenderer2.SetVertexCount(mirrorCount);
 					startPoint = hit.point;
+					mirror1 = true;
+				}
+				if (hit.collider.gameObject.name == "Cube")
+				{
+					Debug.DrawLine (startPoint, hit.point);
+
+					if(mirror1 == false)
+					{
+						lineRenderer2.SetVertexCount(0);
+						lineRenderer.SetPosition(i+1, hit.point);
+					}
+					//else
+					//{
+					//	lineRenderer2.SetPosition(mirrorCount, startPoint);
+				//		mirrorCount++;
+				}
+				if (hit.collider.gameObject.name == "Sphere")
+				{
+					if(mirror1 == false)
+					{
+						lineRenderer2.SetVertexCount(0);
+						lineRenderer.SetPosition(i+1, hit.point);
+					}
+					Application.Quit();
+					//else
+					//{
+					//	lineRenderer2.SetPosition(mirrorCount, startPoint);
+					//		mirrorCount++;
 				}
      	 	 }
 				else
 				{
-				//lineRenderer2.SetPosition(0, -1*hit.point);
-				//lineRenderer2.SetPosition(1, -1*rayDir);
-					Debug.DrawLine (startPoint, rayDir*1000f);
+				if(mirror1 == false)
+				{
+				Debug.DrawLine (startPoint, rayDir*1000f);
 				lineRenderer.SetPosition(i+1, rayDir*1000f);
-					//lineRenderer.SetPosition(i, rayDir*1000f);
+				}
 				}
     	}
 	}
