@@ -25,7 +25,6 @@ public class drawLineAgain : MonoBehaviour {
 		lineRenderer.SetColors(Color.yellow, Color.yellow);
 		lineRenderer2.SetWidth(0.1f, 0.1f);
 		lineRenderer2.SetPosition(0, origin.position);
-		lineRenderer2.SetVertexCount(vertextCount+1);
 		lineRenderer2.material = new Material(Shader.Find("Particles/Additive"));
 		lineRenderer2.SetColors(Color.white, Color.white);
 	}
@@ -40,8 +39,9 @@ public class drawLineAgain : MonoBehaviour {
 	{
  	   Vector3 rayDir = transform.TransformDirection (Vector3.forward);
  		RaycastHit hit;
-		int mirrorCount = 1;
+		int mirrorCount = 0;
 		bool mirror1 = false;
+		lineRenderer2.SetVertexCount(0);
     	for(int i = 0; i < n; i++)
     	{     
        	 if (Physics.Raycast (startPoint, rayDir, out hit, 1000f)) 
@@ -72,13 +72,9 @@ public class drawLineAgain : MonoBehaviour {
 					Debug.DrawLine (startPoint, hit.point);
 					rayDir = (hit.point - startPoint)*100f ;
 					lineRenderer.SetPosition(i+1, hit.point);
-					if(mirror1 == false)
-					{
-					lineRenderer2.SetPosition(0, hit.point);
-					}
-					lineRenderer2.SetPosition(mirrorCount, rayDir);
+					lineRenderer2.SetVertexCount(mirrorCount+1);
+					lineRenderer2.SetPosition(mirrorCount, hit.point);
 					mirrorCount++;
-					lineRenderer2.SetVertexCount(mirrorCount);
 					startPoint = hit.point;
 					mirror1 = true;
 				}
@@ -91,10 +87,7 @@ public class drawLineAgain : MonoBehaviour {
 						lineRenderer2.SetVertexCount(0);
 						lineRenderer.SetPosition(i+1, hit.point);
 					}
-					//else
-					//{
-					//	lineRenderer2.SetPosition(mirrorCount, startPoint);
-				//		mirrorCount++;
+
 				}
 				if (hit.collider.gameObject.name == "Sphere")
 				{
@@ -104,10 +97,6 @@ public class drawLineAgain : MonoBehaviour {
 						lineRenderer.SetPosition(i+1, hit.point);
 					}
 					Application.Quit();
-					//else
-					//{
-					//	lineRenderer2.SetPosition(mirrorCount, startPoint);
-					//		mirrorCount++;
 				}
      	 	 }
 				else
@@ -116,6 +105,12 @@ public class drawLineAgain : MonoBehaviour {
 				{
 				Debug.DrawLine (startPoint, rayDir*1000f);
 				lineRenderer.SetPosition(i+1, rayDir*1000f);
+				}
+				else
+				{
+					lineRenderer2.SetVertexCount(mirrorCount+1);
+					lineRenderer2.SetPosition(mirrorCount, rayDir);
+					mirrorCount++;
 				}
 				}
     	}
