@@ -9,7 +9,7 @@ public class RotateButton : MonoBehaviour {
 //	RotateOnMousecs romcs;
 	void Start()
 	{
-		offset = new Vector3(1,1,1);
+		offset = new Vector3(1,-10,1);
 		isDown = false;
 	}
 	

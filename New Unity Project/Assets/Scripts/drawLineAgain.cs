@@ -18,12 +18,12 @@ public class drawLineAgain : MonoBehaviour {
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRendererG = GetComponent<LineRenderer>();
 		lineRenderer2 = G.AddComponent<LineRenderer>();
-		lineRenderer.SetWidth(0.1f, 0.1f);
+		lineRenderer.SetWidth(0.05f, 0.05f);
 		lineRenderer.SetPosition(0, origin.position);
 		lineRenderer.SetVertexCount(vertextCount+1);
 		lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
 		lineRenderer.SetColors(Color.white, Color.white);
-		lineRenderer2.SetWidth(0.1f, 0.1f);
+		lineRenderer2.SetWidth(0.05f, 0.05f);
 		lineRenderer2.SetPosition(0, origin.position);
 		lineRenderer2.material = new Material(Shader.Find("Particles/Additive"));
 		lineRenderer2.SetColors(Color.red, Color.red);
@@ -59,7 +59,7 @@ public class drawLineAgain : MonoBehaviour {
             	   		startPoint = hit.point;
 						if(mirror1 == false)
 						{
-							print ("mirror1_1");
+						//	print ("mirror1_1");
 						run++;
 						lineRenderer.SetVertexCount(glassCount+2);
 						lineRenderer.SetPosition(glassCount+1, hit.point);
@@ -67,7 +67,7 @@ public class drawLineAgain : MonoBehaviour {
 						}
 						else
 						{
-						print ("mirror1_2");
+					//	print ("mirror1_2");
 						run2++;
 						lineRenderer2.SetVertexCount(mirrorCount+1);
 						lineRenderer2.SetPosition(mirrorCount, hit.point);
@@ -79,7 +79,7 @@ public class drawLineAgain : MonoBehaviour {
 				{
 					if(mirror1 == false)
 					{
-						print ("GlassFirst");
+						//print ("GlassFirst");
 					lineRenderer2.SetVertexCount(vertextCount+1);
 					lineRenderer.SetVertexCount(run+1);
 					Debug.DrawLine (startPoint, hit.point);
@@ -95,7 +95,7 @@ public class drawLineAgain : MonoBehaviour {
 					}
 					else
 					{
-						print ("Glass");
+						//print ("Glass");
 						lineRenderer2.SetVertexCount(vertextCount+1);
 						Debug.DrawLine (startPoint, hit.point);
 						rayDir = Vector3.Normalize((hit.point - startPoint)*1000f );
@@ -113,7 +113,7 @@ public class drawLineAgain : MonoBehaviour {
 
 					if(mirror1 == false)
 					{
-						print ("Whaaat!!");
+						//print ("Whaaat!!");
 						//lineRenderer2.SetVertexCount(0);
 						lineRenderer.SetVertexCount(glassCount+2);
 						lineRenderer.SetPosition(glassCount+1, hit.point);
@@ -121,6 +121,7 @@ public class drawLineAgain : MonoBehaviour {
 					}
 					else
 					{
+						//print ("Whaaat2!!");
 						lineRenderer2.SetVertexCount(mirrorCount+1);
 						lineRenderer2.SetPosition(mirrorCount, hit.point);
 						mirrorCount++;
@@ -154,6 +155,7 @@ public class drawLineAgain : MonoBehaviour {
 				}
 				else
 				{
+					print ("Entered");
 					lineRenderer2.SetVertexCount(mirrorCount+1);
 					lineRenderer2.SetPosition(mirrorCount, rayDir*1000f);
 					mirrorCount++;

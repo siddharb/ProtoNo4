@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\MoveOn.cs" />
      <Compile Include="Assets\Scripts\RotateButton.cs" />
      <Compile Include="Assets\Scripts\RotateOnMouseCS.cs" />
      <Compile Include="Assets\Scripts\drawLine.cs" />
