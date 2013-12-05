@@ -6,12 +6,13 @@ public class RotateOnMouseCS : MonoBehaviour {
 	float sensitivityZ = 15;
 	Transform mytransform;
 	Transform  referenceCamera;
-	GameObject rbutton;
+	public GameObject rbutton;
+	//public Transform RotateButtonT;
 	RotateButton rb;
 
 	void Start () 
 	{
-		rbutton = GameObject.Find("RButton");
+		//rbutton = GameObject.Find("RButton");
 		rb = rbutton.GetComponent<RotateButton>();
 		mytransform = this.transform;
 		referenceCamera = Camera.main.transform;

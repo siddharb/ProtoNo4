@@ -22,11 +22,11 @@ public class drawLineAgain : MonoBehaviour {
 		lineRenderer.SetPosition(0, origin.position);
 		lineRenderer.SetVertexCount(vertextCount+1);
 		lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-		lineRenderer.SetColors(Color.yellow, Color.yellow);
+		lineRenderer.SetColors(Color.white, Color.white);
 		lineRenderer2.SetWidth(0.1f, 0.1f);
 		lineRenderer2.SetPosition(0, origin.position);
 		lineRenderer2.material = new Material(Shader.Find("Particles/Additive"));
-		lineRenderer2.SetColors(Color.white, Color.white);
+		lineRenderer2.SetColors(Color.red, Color.red);
 	}
 	
 	void Update () 
@@ -37,12 +37,14 @@ public class drawLineAgain : MonoBehaviour {
 
 	void drawLaser(Vector3 startPoint,int n)  
 	{
- 	   Vector3 rayDir = transform.TransformDirection (Vector3.forward);
+ 	   Vector3 rayDir = transform.TransformDirection (Vector3.left);
  		RaycastHit hit;
 		int mirrorCount = 0;
 		int glassCount = 0;
 		int run = 0;
+		int run2 = 0;
 		bool mirror1 = false;
+		bool mirror2 = false;
 		lineRenderer2.SetVertexCount(0);
     	for(int i = 0; i < n; i++)
     	{     
@@ -57,6 +59,7 @@ public class drawLineAgain : MonoBehaviour {
             	   		startPoint = hit.point;
 						if(mirror1 == false)
 						{
+							print ("mirror1_1");
 						run++;
 						lineRenderer.SetVertexCount(glassCount+2);
 						lineRenderer.SetPosition(glassCount+1, hit.point);
@@ -64,18 +67,23 @@ public class drawLineAgain : MonoBehaviour {
 						}
 						else
 						{
+						print ("mirror1_2");
+						run2++;
 						lineRenderer2.SetVertexCount(mirrorCount+1);
 						lineRenderer2.SetPosition(mirrorCount, hit.point);
 						mirrorCount++;
 						//mirrorCount++;
 						}
 					}
-				if (hit.collider.gameObject.name == "Glass_red")
+				if (hit.collider.gameObject.tag == "Glass_red")
 				{
+					if(mirror1 == false)
+					{
+						print ("GlassFirst");
 					lineRenderer2.SetVertexCount(vertextCount+1);
 					lineRenderer.SetVertexCount(run+1);
 					Debug.DrawLine (startPoint, hit.point);
-					rayDir = Vector3.Normalize((hit.point - startPoint)*100f );
+					rayDir = Vector3.Normalize((hit.point - startPoint)*1000f );
 					lineRenderer.SetVertexCount(glassCount+2);
 					lineRenderer.SetPosition(glassCount+1, hit.point);
 					glassCount++;
@@ -84,28 +92,53 @@ public class drawLineAgain : MonoBehaviour {
 					mirrorCount++;
 					startPoint = hit.point;
 					mirror1 = true;
+					}
+					else
+					{
+						print ("Glass");
+						lineRenderer2.SetVertexCount(vertextCount+1);
+						Debug.DrawLine (startPoint, hit.point);
+						rayDir = Vector3.Normalize((hit.point - startPoint)*1000f );
+						glassCount++;
+						lineRenderer2.SetVertexCount(mirrorCount+1);
+						lineRenderer2.SetPosition(mirrorCount, hit.point);
+						mirrorCount++;
+						startPoint = hit.point;
+						//mirror2 = true;
+					}
 				}
-				if (hit.collider.gameObject.name == "Cube")
+				if (hit.collider.gameObject.tag == "Obstacle")
 				{
 					Debug.DrawLine (startPoint, hit.point);
 
 					if(mirror1 == false)
 					{
-						lineRenderer2.SetVertexCount(0);
+						print ("Whaaat!!");
+						//lineRenderer2.SetVertexCount(0);
 						lineRenderer.SetVertexCount(glassCount+2);
 						lineRenderer.SetPosition(glassCount+1, hit.point);
 						glassCount++;
 					}
-
+					else
+					{
+						lineRenderer2.SetVertexCount(mirrorCount+1);
+						lineRenderer2.SetPosition(mirrorCount, hit.point);
+						mirrorCount++;
+					}
 				}
 				if (hit.collider.gameObject.name == "Sphere")
 				{
 					if(mirror1 == false)
 					{
-						lineRenderer2.SetVertexCount(0);
 						lineRenderer.SetVertexCount(glassCount+2);
 						lineRenderer.SetPosition(glassCount+1, hit.point);
 						glassCount++;
+					}
+					else
+					{
+						lineRenderer2.SetVertexCount(mirrorCount+1);
+						lineRenderer2.SetPosition(mirrorCount, hit.point);
+						mirrorCount++;
 					}
 					Application.Quit();
 				}
