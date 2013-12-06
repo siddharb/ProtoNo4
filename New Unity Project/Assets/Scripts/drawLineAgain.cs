@@ -127,7 +127,7 @@ public class drawLineAgain : MonoBehaviour {
 						mirrorCount++;
 					}
 				}
-				if (hit.collider.gameObject.name == "Sphere")
+				if (hit.collider.gameObject.tag == "winItem")
 				{
 					if(mirror1 == false)
 					{
@@ -140,7 +140,7 @@ public class drawLineAgain : MonoBehaviour {
 						lineRenderer2.SetVertexCount(mirrorCount+1);
 						lineRenderer2.SetPosition(mirrorCount, hit.point);
 						mirrorCount++;
-						Application.LoadLevel("Next_Scene");
+						Invoke("delayMan", 2.3f);
 					}
 				}
      	 	 }
@@ -155,13 +155,18 @@ public class drawLineAgain : MonoBehaviour {
 				}
 				else
 				{
-					print ("Entered");
+					//print ("Entered");
 					lineRenderer2.SetVertexCount(mirrorCount+1);
 					lineRenderer2.SetPosition(mirrorCount, rayDir*1000f);
 					mirrorCount++;
 				}
 				}
     	}
+	}
+	void delayMan()
+	{
+		print ("Ended");
+		Application.LoadLevel("Next_Scene");
 	}
 
 }
