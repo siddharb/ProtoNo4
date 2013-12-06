@@ -140,8 +140,8 @@ public class drawLineAgain : MonoBehaviour {
 						lineRenderer2.SetVertexCount(mirrorCount+1);
 						lineRenderer2.SetPosition(mirrorCount, hit.point);
 						mirrorCount++;
+						Application.LoadLevel("Next_Scene");
 					}
-					Application.Quit();
 				}
      	 	 }
 				else
